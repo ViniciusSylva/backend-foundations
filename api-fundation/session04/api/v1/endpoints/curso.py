@@ -34,7 +34,7 @@ async def get_cursos(db: AsyncSession = Depends(get_session)):
     async with db as session:
         query = select(CursoModel)
         result = await session.execute(query)
-        cursos: List[CursoModel] = result.scarlars().all()
+        cursos: List[CursoModel] = result.scalar().all()
 
         return cursos
 
@@ -45,7 +45,7 @@ async def get_curso(curso_id: int, db: AsyncSession = Depends(get_session)):
     async with db as session:
         query = select(CursoModel).filter(CursoModel.id == curso_id)
         result = await session.execute(query)
-        curso = result.scarlars_one_or_none()
+        curso = result.scalar_one_or_none()
 
         if curso: 
             return curso
@@ -60,7 +60,7 @@ async def put_curso(curso_id: int, curso: CursoSchema, db: AsyncSession = Depend
     async with db as session:
         query = select(CursoModel).filter(CursoModel.id == curso_id)
         result = await session.execute(query)
-        curso_up = result.scarlars_one_or_none()
+        curso_up = result.scalar_one_or_none()
 
         if curso_up: 
             curso_up.titulo = curso.titulo
@@ -81,7 +81,7 @@ async def delete_curso(curso_id: int, db: AsyncSession = Depends(get_session)):
     async with db as session:
         query = select(CursoModel).filter(CursoModel.id == curso_id)
         result = await session.execute(query)
-        curso_del = result.scarlars_one_or_none()
+        curso_del = result.scalar_one_or_none()
 
         if curso_del: 
             await session.delete(curso_del)
