@@ -13,9 +13,9 @@ from models.curso_model import CursoModel
 from core.deps import get_session
 
 # Bypass warning SQLModel select 
-from sqlmodel.sql.expression import Select, Select0fScalar
+from sqlmodel.sql.expression import Select, SelectOfScalar
 
-Select0fScalar.inherit_cache = True # type: ignore
+SelectOfScalar.inherit_cache = True # type: ignore
 Select.inherit_cache = True # type: ignore
 # FIm bypass
 
@@ -35,7 +35,7 @@ async def post_curso(curso: CursoModel, db: AsyncSession = Depends(get_session))
 
 
 # GET Cursos
-@router.get('/', responses_model=List[CursoModel])
+@router.get('/', response_model=List[CursoModel])
 async def get_cursos(db: AsyncSession = Depends(get_session)):
     async with db as session: 
         query = select(CursoModel)
