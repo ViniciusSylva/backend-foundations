@@ -51,7 +51,7 @@ async def get_current_user(db: Session = Depends(get_session), token: str = Depe
 
     async with db as session: 
         query = select(UsuarioModel).filter(UsuarioModel.id == int(token_data.username))
-        result = await session.execure(query)
+        result = await session.execute(query)
         usuario: UsuarioModel = result.scalars().unique().one_or_none()
 
         if usuario is None: 

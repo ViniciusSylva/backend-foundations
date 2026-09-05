@@ -6,11 +6,11 @@ from datetime import datetime, timedelta
 from fastapi.security import OAuth2PasswordBearer
 
 from sqlalchemy.future import select
-from sqlalcheny.ext.asyncio import AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from jose import jwt
 
-from models.usuario.model import UsuarioModel
+from models.usuario_model import UsuarioModel
 from core.configs import settings
 from core.security import verificar_senha
 
