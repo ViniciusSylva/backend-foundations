@@ -8,7 +8,7 @@ class UsuarioModel(settings.DBBaseModel):
     __tablename__ = 'usuarios'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(256), nullable = True)
+    nome = Column(String(256), nullable = True)
     sobrenome = Column(String(256), nullable = True)
     email = Column(String(256), index=True, nullable=False, unique=True)
     senha = Column(String(256), nullable = False)

@@ -1,14 +1,15 @@
-from typing import List, Optinal, Any
+from typing import List, Optional, Any
 
 from fastapi import APIRouter, status, Depends, HTTPException, Response
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.responses import JSONResponse
 
-from sqlalchemy.ext.asyncio import AsyncSesion
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select 
+from sqlalchemy.exc import IntegrityError
 
 from models.usuario_model import UsuarioModel
-from schema.usuario_schema import UsuarioSchemaUP, UsuarioSchemaBase, UsuarioSchemaCreate, UsuarioSchemaArtigos
+from schemas.usuario_schema import UsuarioSchemaUP, UsuarioSchemaBase, UsuarioSchemaCreate, UsuarioSchemaArtigos
 from core.deps import get_session, get_current_user
 from core.security import gerar_hash_senha
 from core.auth import autenticar, criar_token_acesso
@@ -28,10 +29,13 @@ async def post_usuario(usuario: UsuarioSchemaCreate, db: AsyncSesion = Depends(g
     novo_usuario: UsuarioModel = UsuarioModel(nome=usuario.nome, sobrenome=usuario.sobrenome, 
                                               email=usuario.email, senha=gerar_hash_senha(usuario.senha), eh_admin=usuario.eh_admin)
     async with db as session:
-        session.add(novo_usuario)
-        await session.commit()
+        try:
+            session.add(novo_usuario)
+            await session.commit()
 
-        return novo_usuario
+            return novo_usuario
+        except IntegrityError:
+            raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE, detail='Já existe um usuário com este e-mail cadastrado')
 
 
 # GET Usuarios
@@ -53,7 +57,7 @@ async def get_usuarios(usuario_id: int, db: AsyncSesion = Depends(get_session)):
         result = await session.execute(query)
         usuarios: UsuarioSchemaArtigos = result.scalars().unique().one_or_none()
 
-        if usuario: 
+        if usuarios: 
             return usuarios
         else: 
             raise HTTPException(detail='Usuario não encontrado.',
@@ -69,16 +73,16 @@ async def put_usuarios(usuario_id: int,Usuario: UsuarioSchemaUP, db: AsyncSesion
         usuario_up: UsuarioSchemaBase = result.scalars().unique().one_or_none()
 
         if usuario_up:
-            if usuario.nome: 
-                usuario_up.nome = usuario.nome
-            if usuario.sobrenome:
-                usuario_up.sobrenome = usuario.sobrenome
-            if usuario.email:
-                usuario_up.email = usuario.email
-            if usuario.eh_admin: 
-                usuario_up.eh_admin = usuario.eh_admin
-            if usuario.senha:
-                usuario_up.senha = gerar_hash_senha(usuario.senha)
+            if Usuario.nome: 
+                usuario_up.nome = Usuario.nome
+            if Usuario.sobrenome:
+                usuario_up.sobrenome = Usuario.sobrenome
+            if Usuario.email:
+                usuario_up.email = Usuario.email
+            if Usuario.eh_admin: 
+                usuario_up.eh_admin = Usuario.eh_admin
+            if Usuario.senha:
+                usuario_up.senha = gerar_hash_senha(Usuario.senha)
 
             await session.commit()
 
@@ -98,7 +102,7 @@ async def delete_usuarios(usuario_id: int, db: AsyncSesion = Depends(get_session
 
         if usuario_del: 
             await session.delete(usuario_del)
-            await session.commmit()
+            await session.commit()
 
             return Response(status_code=status.HTTP_204_NO_CONTENT)
         else: 
