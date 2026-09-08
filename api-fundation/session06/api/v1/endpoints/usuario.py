@@ -25,7 +25,7 @@ def get_logado(usuario_logado: UsuarioModel = Depends(get_current_user)):
 
 # POST / Signup
 @router.post('/signup', status_code=status.HTTP_201_CREATED, response_model=UsuarioSchemaBase)
-async def post_usuario(usuario: UsuarioSchemaCreate, db: AsyncSesion = Depends(get_session)):
+async def post_usuario(usuario: UsuarioSchemaCreate, db: AsyncSession = Depends(get_session)):
     novo_usuario: UsuarioModel = UsuarioModel(nome=usuario.nome, sobrenome=usuario.sobrenome, 
                                               email=usuario.email, senha=gerar_hash_senha(usuario.senha), eh_admin=usuario.eh_admin)
     async with db as session:
@@ -40,7 +40,7 @@ async def post_usuario(usuario: UsuarioSchemaCreate, db: AsyncSesion = Depends(g
 
 # GET Usuarios
 @router.get('/', response_model=List[UsuarioSchemaBase])
-async def get_usuarios(db: AsyncSesion = Depends(get_session)):
+async def get_usuarios(db: AsyncSession = Depends(get_session)):
     async with db as session:
         query = select(UsuarioModel)
         result = await session.execute(query)
@@ -51,7 +51,7 @@ async def get_usuarios(db: AsyncSesion = Depends(get_session)):
 
 # GET Usuario
 @router.get('/{usuario_id}', response_model=UsuarioSchemaArtigos, status_code=status.HTTP_200_OK)
-async def get_usuarios(usuario_id: int, db: AsyncSesion = Depends(get_session)):
+async def get_usuarios(usuario_id: int, db: AsyncSession = Depends(get_session)):
     async with db as session:
         query = select(UsuarioModel).filter(UsuarioModel.id == usuario_id)
         result = await session.execute(query)
@@ -66,7 +66,7 @@ async def get_usuarios(usuario_id: int, db: AsyncSesion = Depends(get_session)):
 
 # PUT Artigo
 @router.put('/{usuario_id}', response_model=UsuarioSchemaBase, status_code=status.HTTP_202_ACCEPTED)
-async def put_usuarios(usuario_id: int,Usuario: UsuarioSchemaUP, db: AsyncSesion = Depends(get_session)):
+async def put_usuarios(usuario_id: int,Usuario: UsuarioSchemaUP, db: AsyncSession = Depends(get_session)):
     async with db as session:
         query = select(UsuarioModel).filter(UsuarioModel.id == usuario_id)
         result = await session.execute(query)
@@ -79,7 +79,7 @@ async def put_usuarios(usuario_id: int,Usuario: UsuarioSchemaUP, db: AsyncSesion
                 usuario_up.sobrenome = Usuario.sobrenome
             if Usuario.email:
                 usuario_up.email = Usuario.email
-            if Usuario.eh_admin: 
+            if Usuario.eh_admin is not None:
                 usuario_up.eh_admin = Usuario.eh_admin
             if Usuario.senha:
                 usuario_up.senha = gerar_hash_senha(Usuario.senha)
@@ -94,7 +94,7 @@ async def put_usuarios(usuario_id: int,Usuario: UsuarioSchemaUP, db: AsyncSesion
 
 # DELETE Usuario
 @router.delete('/{usuario_id}', status_code=status.HTTP_204_NO_CONTENT)
-async def delete_usuarios(usuario_id: int, db: AsyncSesion = Depends(get_session)):
+async def delete_usuarios(usuario_id: int, db: AsyncSession = Depends(get_session)):
     async with db as session:
         query = select(UsuarioModel).filter(UsuarioModel.id == usuario_id)
         result = await session.execute(query)
@@ -112,7 +112,7 @@ async def delete_usuarios(usuario_id: int, db: AsyncSesion = Depends(get_session
 
 # POST login
 @router.post('/login')
-async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSesion = Depends(get_session)):
+async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: AsyncSession = Depends(get_session)):
     usuario = await autenticar(email=form_data.username, senha=form_data.password, db=db)
 
     if not usuario:

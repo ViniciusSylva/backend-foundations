@@ -56,7 +56,7 @@ def _criar_token(tipo_token: str, tempo_vida: timedelta, sub: str) -> str:
 def criar_token_acesso(sub: str) -> str:
 
     return _criar_token(
-        tipo_token='acsess_token',
+        tipo_token='access_token',
         tempo_vida=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
         sub=sub
     )
