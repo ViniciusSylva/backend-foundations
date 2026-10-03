@@ -3,3 +3,4 @@ __pycache__/
 *.pyc
 pyvenv.cfg
 .vscode
+acessos.log
