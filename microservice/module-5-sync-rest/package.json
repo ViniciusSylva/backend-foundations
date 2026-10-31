@@ -1,5 +1,5 @@
 {
-  "name": "module-5-resilience",
+  "name": "module-8-sync-rest",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,6 +11,7 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "opossum": "^10.0.0"
+    "axios": "^1.21.0",
+    "express": "^5.3.0"
   }
 }
