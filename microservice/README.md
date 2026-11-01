@@ -1,33 +1,35 @@
 # Microservices Backend Foundations 🚀
 
+---
+
 ## 📌 About
-Prática guiada e laboratório hands-on de **Arquitetura de Microserviços** focada na transição de sistemas monolíticos para arquiteturas distribuídas. O projeto engloba a implementação de padrões essenciais de mensageria assíncrona, resiliência, roteamento via API Gateway, chamadas síncronas com tratamento de falhas e gerenciamento de transações distribuídas (Saga Pattern).
+Guided practice and hands-on laboratory focused on **Microservices Architecture**, transitioning from monolithic systems to distributed architectures. The project encompasses the implementation of key asynchronous messaging patterns, resilience, routing via an API Gateway, synchronous calls with fault handling, and distributed transaction management (Saga Pattern).
 
 ## 🚀 Technologies
 - **Node.js** (Express, Axios, Opossum, amqplib)
 - **Docker & Docker Compose** (RabbitMQ Management)
 - **RabbitMQ** (AMQP Broker)
-- **Git** (Versionamento e estrutura modular)
+- **Git** (Version control and modular repository structure)
 
 ## 🧠 What I learned
-- **Monolith vs. Microservices**: Separação de contextos de negócio (*Bounded Context*) e isolamento de dados com a estratégia *Database-per-Service*.
-- **Comunicação Assíncrona via Mensageria**: Publicação e consumo de eventos em filas utilizando RabbitMQ para garantir o desacoplamento de serviços.
-- **Resiliência e Tolerância a Falhas**: Aplicação do padrão *Circuit Breaker* com a biblioteca `opossum` para interromper chamadas a serviços instáveis e responder com *Fallbacks*.
-- **API Gateway Pattern**: Centralização de tráfego na porta HTTP 8000 roteando requisições dinamicamente para múltiplos microserviços isolados.
-- **Comunicação Síncrona REST com Timeouts**: Controle de chamadas HTTP síncronas atrelando limites de tempo (*timeouts*) para prevenir travamento em cadeia (*cascading failures*).
-- **Saga Pattern & Transações Compensatórias**: Manutenção da integridade eventual de dados entre múltiplos bancos sem a presença de transações ACID globais.
-- **Observabilidade**: Utilização de *Correlation IDs* no cabeçalho das requisições para rastreabilidade de chamadas distribuídas.
+- **Monolith vs. Microservices**: Business context separation (*Bounded Context*) and data isolation using the *Database-per-Service* strategy.
+- **Asynchronous Messaging Communication**: Publishing and consuming queue events using RabbitMQ to ensure service decoupling.
+- **Resilience and Fault Tolerance**: Applying the *Circuit Breaker* pattern with the `opossum` library to trip calls to unstable services and respond with *Fallbacks*.
+- **API Gateway Pattern**: Centralizing HTTP traffic on port 8000, dynamically routing requests to multiple isolated microservices.
+- **Synchronous REST Communication with Timeouts**: Managing synchronous HTTP calls by enforcing time limits (*timeouts*) to prevent *cascading failures*.
+- **Saga Pattern & Compensating Transactions**: Maintaining eventual data consistency across multiple databases without global ACID transactions.
+- **Observability**: Leveraging *Correlation IDs* in request headers for end-to-end distributed tracing.
 
 ## ⚠️ Challenges
-- **Compatibilidade de Comandos e Ambientes**: Ajuste de comandos de terminal (diferenças de sintaxe entre CMD, PowerShell e Bash no Windows) e resolução de conflitos de módulos em subpastas isoladas.
-- **Parsing de JSON e Escapes no PowerShell**: Tratamento de caracteres de escape ao testar endpoints HTTP via `curl` no PowerShell.
-- **Sincronia de Subida dos Contêineres**: Lidar com conexões antecipadas de scripts Node.js antes da inicialização completa do serviço de mensageria no Docker (`ECONNRESET`).
+- **Cross-Platform & Environment Compatibility**: Adjusting terminal commands (syntax differences between CMD, PowerShell, and Bash on Windows) and resolving module conflicts within isolated subfolders.
+- **JSON Parsing & Escaping in PowerShell**: Handling character escaping when testing HTTP endpoints via `curl` in PowerShell.
+- **Container Startup Synchronization**: Handling premature Node.js script connections before the messaging service in Docker is fully initialized (`ECONNRESET`).
 
 ## 🔧 Improvements
-- Criar automação com `docker-compose.yml` único para subir todos os microserviços simultaneamente.
-- Implementar autenticação via JWT diretamente na camada do API Gateway.
-- Adicionar rastreamento distribuído (Distributed Tracing) com Jaeger ou OpenTelemetry.
-- Implementar filas de mensagens mortas (Dead Letter Exchange / DLQ) no módulo de mensageria.
+- Create single-command automation via `docker-compose.yml` to spin up all microservices simultaneously.
+- Implement JWT authentication directly at the API Gateway layer.
+- Add distributed tracing with Jaeger or OpenTelemetry.
+- Implement Dead Letter Exchanges (DLQ) in the messaging module.
 
 ## 🌎 About me
 I am a Computer Science student in Brazil, focused on learning and continuous growth. I currently work at a technology company in the backend and automation field. I am still exploring different paths within technology to find my specialization, while developing practical projects and strengthening my foundation.
