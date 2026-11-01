@@ -2,8 +2,6 @@
 
 ---
 
-## English Version
-
 ### 📌 About
 A hands-on, progressive repository built to learn PHP from scratch up to intermediate backend concepts. The project covers core language syntax, web request handling (`GET`/`POST`), security fundamentals, file persistence, session management, basic Object-Oriented Programming (POO), and building RESTful API endpoints with database interaction via PDO.
 
