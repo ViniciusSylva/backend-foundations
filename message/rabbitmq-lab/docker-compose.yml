@@ -1,0 +1,10 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq-mentor
+    ports:
+      - "5672:5672"   # Porta do protocolo AMQP (onde o Node.js vai conectar)
+      - "15672:15672" # Porta da interface web (Management UI)
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin123
